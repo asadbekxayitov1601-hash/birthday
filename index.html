@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- General Page Styling --- */
+        body {
+            background-color: #050505; /* Very dark background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Caveat', cursive;
+            color: #f0e68c; /* Soft yellow text */
+        }
+
+        .container {
+            text-align: center;
+            display: flex;
+            flex-direction: row; /* Side by side layout like the photo */
+            align-items: center;
+            gap: 50px;
+        }
+
+        /* --- Text Styling --- */
+        .text-section {
+            text-align: left;
+            z-index: 10;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin: 0;
+            color: #ffdda1;
+            text-shadow: 0 0 10px rgba(255, 165, 0, 0.3);
+        }
+
+        p {
+            font-size: 1.8rem;
+            margin: 10px 0;
+            color: #ffbf00;
+        }
+
+        .sub-text {
+            font-size: 1.2rem;
+            color: #e38e55;
+            margin-top: 20px;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column-reverse;
+                gap: 20px;
+            }
+            .text-section {
+                text-align: center;
+            }
+        }
+
+        /* --- THE CAKE CSS ART --- */
+        .cake-container {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .cake-container:active {
+            transform: scale(0.98);
+        }
+
+        /* The Plate */
+        .plate {
+            position: absolute;
+            bottom: 0;
+            width: 240px;
+            height: 60px;
+            background: #e0e0e0;
+            border-radius: 50%;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.5);
+            z-index: 1;
+        }
+
+        /* Cake Layers */
+        .cake-base {
+            position: absolute;
+            bottom: 15px;
+            width: 200px;
+            height: 100px;
+            background: #d2691e; /* Chocolate/Brown sponge */
+            border-radius: 50% 50% 10px 10px;
+            z-index: 2;
+        }
+
+        /* Top Icing Layer */
+        .cake-icing {
+            position: absolute;
+            bottom: 60px; /* Sits on top of base */
+            width: 200px;
+            height: 80px;
+            background: #ff9aa2; /* Pink/Peach Icing */
+            border-radius: 50%;
+            z-index: 3;
+            box-shadow: inset 0 -5px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Drips */
+        .drip {
+            position: absolute;
+            top: 40px; /* Halfway down the icing */
+            width: 20px;
+            height: 40px;
+            background: #ff9aa2;
+            border-radius: 0 0 20px 20px;
+            z-index: 3;
+        }
+        .drip:nth-child(1) { left: 20px; height: 35px; }
+        .drip:nth-child(2) { left: 50px; height: 50px; }
+        .drip:nth-child(3) { left: 85px; height: 30px; }
+        .drip:nth-child(4) { left: 120px; height: 45px; }
+        .drip:nth-child(5) { left: 160px; height: 35px; }
+
+        /* The Candle */
+        .candle {
+            position: absolute;
+            bottom: 110px;
+            width: 15px;
+            height: 60px;
+background: repeating-linear-gradient(
+                45deg,
+                #fff,
+                #fff 5px,
+                #ff69b4 5px,
+                #ff69b4 10px
+            );
+            border-radius: 3px;
+            z-index: 4;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+        }
+
+        /* The Flame */
+        .flame {
+            position: absolute;
+            bottom: 175px; /* Above candle */
+            width: 15px;
+            height: 30px;
+            background: radial-gradient(ellipse at bottom, #ffeb3b 0%, #ff9800 60%, #ff5722 100%);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            box-shadow: 0 0 20px #ffeb3b, 0 0 10px #ff9800;
+            z-index: 5;
+            animation: flicker 1s infinite alternate ease-in-out;
+            transform-origin: center bottom;
+        }
+
+        /* Animation for the flame */
+        @keyframes flicker {
+            0% { transform: scale(1) rotate(-2deg); opacity: 1; }
+            25% { transform: scale(1.1) rotate(2deg); opacity: 0.9; }
+            50% { transform: scale(0.9) rotate(-1deg); opacity: 1; }
+            75% { transform: scale(1.05) rotate(1deg); opacity: 0.95; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        /* Smoke (Hidden by default) */
+        .smoke {
+            position: absolute;
+            bottom: 180px;
+            width: 10px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            opacity: 0;
+            z-index: 6;
+        }
+
+        /* --- JavaScript Interaction Classes --- */
+        .flame.off {
+            display: none;
+        }
+
+        .smoke.puff {
+            animation: smoke-rise 1.5s forwards;
+        }
+
+        @keyframes smoke-rise {
+            0% { opacity: 0.6; transform: translateY(0) scale(1); }
+            50% { opacity: 0.3; transform: translateY(-20px) scale(2); }
+            100% { opacity: 0; transform: translateY(-40px) scale(3); }
+        }
+
+        /* Decor: Some sprinkles on top */
+        .sprinkle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            z-index: 4;
+        }
+        .s1 { background: yellow; top: 20px; left: 40px; }
+        .s2 { background: lightblue; top: 30px; left: 80px; }
+        .s3 { background: limegreen; top: 15px; left: 120px; }
+        .s4 { background: violet; top: 35px; left: 150px; }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="text-section">
+            <h1>Tug'ilgan kuniz bilan :)</h1>
+            <h2>Tortti ustiga bosin :)</h2>
+            <h2>Keyin shamdi puflen !</h2>
+            <p class="sub-text" id="final-message"></p>
+        </div>
+
+        <div class="cake-container" onclick="blowCandle()">
+            <div class="plate"></div>
+            
+            <div class="cake-base"></div>
+            
+            <div class="cake-icing">
+                <div class="drip"></div>
+                <div class="drip"></div>
+                <div class="drip"></div>
+                <div class="drip"></div>
+                <div class="drip"></div>
+                <div class="sprinkle s1"></div>
+                <div class="sprinkle s2"></div>
+                <div class="sprinkle s3"></div>
+                <div class="sprinkle s4"></div>
+            </div>
+
+            <div class="candle"></div>
+            <div class="flame" id="flame"></div>
+            <div class="smoke" id="smoke"></div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to handle the click event
+        function blowCandle() {
+            const flame = document.getElementById('flame');
+            const smoke = document.getElementById('smoke');
+            const message = document.getElementById('final-message');
+        // Check if candle is already out
+            if (!flame.classList.contains('off')) {
+                // Remove the flame
+                flame.classList.add('off');
+                
+                // Add smoke animation
+                smoke.classList.add('puff');
+                
+                // Optional: Change text slightly for fun
+                message.style.color = "#fff";
+                message.style.textShadow = "0 0 10px #fff";
+                message.innerHTML = "Tilak tilen ! (hamma orzuingiz ro'yobga chiqsin!)";
+            }
+        }
+    </script>
+</body>
+</html>
