@@ -19,18 +19,30 @@
             color: #f0e68c; /* Soft yellow text */
         }
 
+        /* Canvas for Fireworks */
+        #fireworksCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Allows clicking through the canvas */
+            z-index: 0; /* Behind the text/cake */
+        }
+
         .container {
             text-align: center;
             display: flex;
             flex-direction: row; /* Side by side layout like the photo */
             align-items: center;
             gap: 50px;
+            z-index: 1; /* Above fireworks */
+            position: relative;
         }
 
         /* --- Text Styling --- */
         .text-section {
             text-align: left;
-            z-index: 10;
         }
 
         h1 {
@@ -50,6 +62,7 @@
             font-size: 1.2rem;
             color: #e38e55;
             margin-top: 20px;
+            transition: all 0.5s ease;
         }
 
         /* Mobile responsiveness */
@@ -136,7 +149,7 @@
             bottom: 110px;
             width: 15px;
             height: 60px;
-background: repeating-linear-gradient(
+            background: repeating-linear-gradient(
                 45deg,
                 #fff,
                 #fff 5px,
@@ -215,12 +228,14 @@ background: repeating-linear-gradient(
 </head>
 <body>
 
+    <canvas id="fireworksCanvas"></canvas>
+
     <div class="container">
         <div class="text-section">
-            <h1>Tug'ilgan kuniz bilan :)</h1>
-            <h2>Tortti ustiga bosin :)</h2>
-            <h2>Keyin shamdi puflen !</h2>
-            <p class="sub-text" id="final-message"></p>
+            <h1>Happy Birthday Cutie :)</h1>
+            <p>Click the Cake :)</p>
+            <p>Then, Blow the candles out !</p>
+            <p class="sub-text" id="final-message">(your girlfriend loves you)</p>
         </div>
 
         <div class="cake-container" onclick="blowCandle()">
@@ -247,12 +262,13 @@ background: repeating-linear-gradient(
     </div>
 
     <script>
-        // JavaScript to handle the click event
+        // --- CAKE LOGIC ---
         function blowCandle() {
             const flame = document.getElementById('flame');
             const smoke = document.getElementById('smoke');
             const message = document.getElementById('final-message');
-        // Check if candle is already out
+
+            // Check if candle is already out
             if (!flame.classList.contains('off')) {
                 // Remove the flame
                 flame.classList.add('off');
@@ -260,12 +276,116 @@ background: repeating-linear-gradient(
                 // Add smoke animation
                 smoke.classList.add('puff');
                 
-                // Optional: Change text slightly for fun
+                // Change text slightly for fun
                 message.style.color = "#fff";
                 message.style.textShadow = "0 0 10px #fff";
-                message.innerHTML = "Tilak tilen ! (hamma orzuingiz ro'yobga chiqsin!)";
+                message.innerHTML = "Make a wish! (your girlfriend loves you)";
+
+                // TRIGGER FIREWORKS!
+                startFireworks();
             }
         }
+
+        // --- FIREWORKS LOGIC ---
+        const canvas = document.getElementById('fireworksCanvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Firework Particle Class
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                // Random velocity
+                this.velocity = {
+                    x: (Math.random() - 0.5) * 8, 
+                    y: (Math.random() - 0.5) * 8
+                };
+                this.alpha = 1; // Opacity
+                this.friction = 0.96; // Slow down
+                this.gravity = 0.03; // Fall down
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 3, 0, Math.PI * 2, false);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.restore();
+            }
+
+            update() {
+                this.velocity.x *= this.friction;
+                this.velocity.y *= this.friction;
+                this.velocity.y += this.gravity;
+                this.x += this.velocity.x;
+                this.y += this.velocity.y;
+                this.alpha -= 0.01; // Fade out
+            }
+        }
+
+        let particles = [];
+        
+        // Neon palette matching the theme
+        const colors = ['#ff69b4', '#ffeb3b', '#00d2ff', '#ff9aa2', '#f0e68c'];
+
+        function createFirework(x, y) {
+            const particleCount = 60;
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle(x, y, color));
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            // Clear canvas but leave a trail effect
+            ctx.fillStyle = 'rgba(5, 5, 5, 0.1)'; 
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach((particle, index) => {
+                if (particle.alpha > 0) {
+                    particle.update();
+                    particle.draw();
+                } else {
+                    particles.splice(index, 1);
+                }
+            });
+        }
+
+        // Start animation loop immediately so it's ready
+        animate();
+
+        // Function to launch random fireworks automatically
+        function startFireworks() {
+            let duration = 5000; // Lasts 5 seconds
+            let end = Date.now() + duration;
+
+            (function frame() {
+                // Launch a firework from a random x position at the bottom/middle
+                const randomX = Math.random() * canvas.width;
+                const randomY = Math.random() * (canvas.height / 2); // Top half of screen
+                
+                createFirework(randomX, randomY);
+
+                if (Date.now() < end) {
+                    // Keep launching every 300ms
+                    setTimeout(frame, 300);
+                }
+            }());
+        }
+
     </script>
 </body>
 </html>
