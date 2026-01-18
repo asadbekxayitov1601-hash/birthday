@@ -1,3 +1,4 @@
+KHAYITOV, [18.01.2026 20:17]
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -142,8 +143,7 @@
         .drip:nth-child(3) { left: 85px; height: 30px; }
         .drip:nth-child(4) { left: 120px; height: 45px; }
         .drip:nth-child(5) { left: 160px; height: 35px; }
-
-        /* The Candle */
+/* The Candle */
         .candle {
             position: absolute;
             bottom: 110px;
@@ -233,9 +233,9 @@
     <div class="container">
         <div class="text-section">
             <h1>Tug'ilgan kuniz bilan :)</h1>
-            <h2>Tortti ustiga bosin :) </h2>
-            <h2>Keyin, shamdi puflen ! </h2>
-</<             <h2 class="sub-text"> </h2>
+            <h2>Tortti ustiga bosin :)</h2>
+            <h2>Keyin shamdi puflen !</h2>
+            <h2 class="sub-text" id="final-message"></h2>
         </div>
 
         <div class="cake-container" onclick="blowCandle()">
@@ -267,8 +267,7 @@
             const flame = document.getElementById('flame');
             const smoke = document.getElementById('smoke');
             const message = document.getElementById('final-message');
-
-            // Check if candle is already out
+// Check if candle is already out
             if (!flame.classList.contains('off')) {
                 // Remove the flame
                 flame.classList.add('off');
@@ -279,7 +278,7 @@
                 // Change text slightly for fun
                 message.style.color = "#fff";
                 message.style.textShadow = "0 0 10px #fff";
-                message.innerHTML = "Tilak tilen! (hamma orzuyingiz amalga oshsin)";
+                message.innerHTML = "Tilak tilen ! (orzuyingiz amalga oshsin!)";
 
                 // TRIGGER FIREWORKS!
                 startFireworks();
@@ -389,4 +388,3 @@
     </script>
 </body>
 </html>
-
