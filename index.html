@@ -1,46 +1,43 @@
-KHAYITOV, [18.01.2026 20:17]
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uz">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday!</title>
+    <title>Tug'ilgan Kuningiz Bilan!</title>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* --- General Page Styling --- */
         body {
-            background-color: #050505; /* Very dark background */
+            background-color: #050505;
+            display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
             overflow: hidden;
             font-family: 'Caveat', cursive;
-            color: #f0e68c; /* Soft yellow text */
+            color: #f0e68c;
         }
 
-        /* Canvas for Fireworks */
         #fireworksCanvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none; /* Allows clicking through the canvas */
-            z-index: 0; /* Behind the text/cake */
+            pointer-events: none;
+            z-index: 0;
         }
 
         .container {
-            text-align: center;
             display: flex;
-            flex-direction: row; /* Side by side layout like the photo */
+            flex-direction: row;
             align-items: center;
             gap: 50px;
-            z-index: 1; /* Above fireworks */
+            z-index: 1;
             position: relative;
+            max-width: 90%;
         }
 
-        /* --- Text Styling --- */
         .text-section {
             text-align: left;
         }
@@ -50,11 +47,12 @@ KHAYITOV, [18.01.2026 20:17]
             margin: 0;
             color: #ffdda1;
             text-shadow: 0 0 10px rgba(255, 165, 0, 0.3);
+            line-height: 1.2;
         }
 
         p {
             font-size: 1.8rem;
-            margin: 10px 0;
+            margin: 15px 0;
             color: #ffbf00;
         }
 
@@ -62,21 +60,28 @@ KHAYITOV, [18.01.2026 20:17]
             font-size: 1.2rem;
             color: #e38e55;
             margin-top: 20px;
-            transition: all 0.5s ease;
+            opacity: 0.8;
         }
 
-        /* Mobile responsiveness */
         @media (max-width: 768px) {
             .container {
                 flex-direction: column-reverse;
-                gap: 20px;
+                gap: 30px;
+                width: 100%;
             }
+
             .text-section {
-                text-align: center;
+                text-align: left;
+                width: 100%;
+                padding-left: 20px;
+                box-sizing: border-box;
             }
+
+            h1 { font-size: 3rem; }
+            p { font-size: 1.5rem; }
+            .cake-container { transform: scale(0.85); }
         }
 
-        /* --- THE CAKE CSS ART --- */
         .cake-container {
             position: relative;
             width: 250px;
@@ -85,14 +90,8 @@ KHAYITOV, [18.01.2026 20:17]
             justify-content: center;
             align-items: flex-end;
             cursor: pointer;
-            transition: transform 0.1s;
         }
 
-        .cake-container:active {
-            transform: scale(0.98);
-        }
-
-        /* The Plate */
         .plate {
             position: absolute;
             bottom: 0;
@@ -104,33 +103,30 @@ KHAYITOV, [18.01.2026 20:17]
             z-index: 1;
         }
 
-        /* Cake Layers */
         .cake-base {
             position: absolute;
             bottom: 15px;
             width: 200px;
             height: 100px;
-            background: #d2691e; /* Chocolate/Brown sponge */
+            background: #d2691e;
             border-radius: 50% 50% 10px 10px;
             z-index: 2;
         }
 
-        /* Top Icing Layer */
         .cake-icing {
             position: absolute;
-            bottom: 60px; /* Sits on top of base */
+            bottom: 60px;
             width: 200px;
             height: 80px;
-            background: #ff9aa2; /* Pink/Peach Icing */
+            background: #ff9aa2;
             border-radius: 50%;
             z-index: 3;
             box-shadow: inset 0 -5px 10px rgba(0,0,0,0.1);
         }
 
-        /* Drips */
         .drip {
             position: absolute;
-            top: 40px; /* Halfway down the icing */
+            top: 40px;
             width: 20px;
             height: 40px;
             background: #ff9aa2;
@@ -142,28 +138,21 @@ KHAYITOV, [18.01.2026 20:17]
         .drip:nth-child(3) { left: 85px; height: 30px; }
         .drip:nth-child(4) { left: 120px; height: 45px; }
         .drip:nth-child(5) { left: 160px; height: 35px; }
-/* The Candle */
+
         .candle {
             position: absolute;
             bottom: 110px;
             width: 15px;
             height: 60px;
-            background: repeating-linear-gradient(
-                45deg,
-                #fff,
-                #fff 5px,
-                #ff69b4 5px,
-                #ff69b4 10px
-            );
+            background: repeating-linear-gradient(45deg, #fff, #fff 5px, #ff69b4 5px, #ff69b4 10px);
             border-radius: 3px;
             z-index: 4;
             box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
         }
 
-        /* The Flame */
         .flame {
             position: absolute;
-            bottom: 175px; /* Above candle */
+            bottom: 175px;
             width: 15px;
             height: 30px;
             background: radial-gradient(ellipse at bottom, #ffeb3b 0%, #ff9800 60%, #ff5722 100%);
@@ -174,7 +163,6 @@ KHAYITOV, [18.01.2026 20:17]
             transform-origin: center bottom;
         }
 
-        /* Animation for the flame */
         @keyframes flicker {
             0% { transform: scale(1) rotate(-2deg); opacity: 1; }
             25% { transform: scale(1.1) rotate(2deg); opacity: 0.9; }
@@ -183,7 +171,6 @@ KHAYITOV, [18.01.2026 20:17]
             100% { transform: scale(1) rotate(0deg); opacity: 1; }
         }
 
-        /* Smoke (Hidden by default) */
         .smoke {
             position: absolute;
             bottom: 180px;
@@ -195,14 +182,8 @@ KHAYITOV, [18.01.2026 20:17]
             z-index: 6;
         }
 
-        /* --- JavaScript Interaction Classes --- */
-        .flame.off {
-            display: none;
-        }
-
-        .smoke.puff {
-            animation: smoke-rise 1.5s forwards;
-        }
+        .flame.off { display: none; }
+        .smoke.puff { animation: smoke-rise 1.5s forwards; }
 
         @keyframes smoke-rise {
             0% { opacity: 0.6; transform: translateY(0) scale(1); }
@@ -210,7 +191,6 @@ KHAYITOV, [18.01.2026 20:17]
             100% { opacity: 0; transform: translateY(-40px) scale(3); }
         }
 
-        /* Decor: Some sprinkles on top */
         .sprinkle {
             position: absolute;
             width: 6px;
@@ -222,7 +202,6 @@ KHAYITOV, [18.01.2026 20:17]
         .s2 { background: lightblue; top: 30px; left: 80px; }
         .s3 { background: limegreen; top: 15px; left: 120px; }
         .s4 { background: violet; top: 35px; left: 150px; }
-
     </style>
 </head>
 <body>
@@ -232,16 +211,14 @@ KHAYITOV, [18.01.2026 20:17]
     <div class="container">
         <div class="text-section">
             <h1>Tug'ilgan kuniz bilan :)</h1>
-            <h2>Tortti ustiga bosin :)</h2>
-            <h2>Keyin shamdi puflen !</h2>
-            <h2 class="sub-text" id="final-message"></h2>
+            <p>Tortti ustiga bosin :)</p>
+            <p>Keyin shamdi puflen !</p>
+            <p class="sub-text" id="final-message"></p>
         </div>
 
         <div class="cake-container" onclick="blowCandle()">
             <div class="plate"></div>
-            
             <div class="cake-base"></div>
-            
             <div class="cake-icing">
                 <div class="drip"></div>
                 <div class="drip"></div>
@@ -253,7 +230,6 @@ KHAYITOV, [18.01.2026 20:17]
                 <div class="sprinkle s3"></div>
                 <div class="sprinkle s4"></div>
             </div>
-
             <div class="candle"></div>
             <div class="flame" id="flame"></div>
             <div class="smoke" id="smoke"></div>
@@ -261,33 +237,25 @@ KHAYITOV, [18.01.2026 20:17]
     </div>
 
     <script>
-        // --- CAKE LOGIC ---
         function blowCandle() {
             const flame = document.getElementById('flame');
             const smoke = document.getElementById('smoke');
             const message = document.getElementById('final-message');
-// Check if candle is already out
+
             if (!flame.classList.contains('off')) {
-                // Remove the flame
                 flame.classList.add('off');
-                
-                // Add smoke animation
                 smoke.classList.add('puff');
                 
-                // Change text slightly for fun
-                message.style.color = "#fff";
-                message.style.textShadow = "0 0 10px #fff";
-                message.innerHTML = "Tilak tilen ! (orzuyingiz amalga oshsin!)";
-
-                // TRIGGER FIREWORKS!
+                // THIS IS THE MESSAGE THAT APPEARS
+                message.innerHTML = "Tilagingiz amalga oshsin!💝"; 
+                
                 startFireworks();
             }
         }
 
-        // --- FIREWORKS LOGIC ---
+        // Fireworks Logic
         const canvas = document.getElementById('fireworksCanvas');
         const ctx = canvas.getContext('2d');
-
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
@@ -296,22 +264,16 @@ KHAYITOV, [18.01.2026 20:17]
             canvas.height = window.innerHeight;
         });
 
-        // Firework Particle Class
         class Particle {
             constructor(x, y, color) {
                 this.x = x;
                 this.y = y;
                 this.color = color;
-                // Random velocity
-                this.velocity = {
-                    x: (Math.random() - 0.5) * 8, 
-                    y: (Math.random() - 0.5) * 8
-                };
-                this.alpha = 1; // Opacity
-                this.friction = 0.96; // Slow down
-                this.gravity = 0.03; // Fall down
+                this.velocity = { x: (Math.random() - 0.5) * 8, y: (Math.random() - 0.5) * 8 };
+                this.alpha = 1;
+                this.friction = 0.96;
+                this.gravity = 0.03;
             }
-
             draw() {
                 ctx.save();
                 ctx.globalAlpha = this.alpha;
@@ -321,26 +283,22 @@ KHAYITOV, [18.01.2026 20:17]
                 ctx.fill();
                 ctx.restore();
             }
-
             update() {
                 this.velocity.x *= this.friction;
                 this.velocity.y *= this.friction;
                 this.velocity.y += this.gravity;
                 this.x += this.velocity.x;
                 this.y += this.velocity.y;
-                this.alpha -= 0.01; // Fade out
+                this.alpha -= 0.01;
             }
         }
 
         let particles = [];
-        
-        // Neon palette matching the theme
         const colors = ['#ff69b4', '#ffeb3b', '#00d2ff', '#ff9aa2', '#f0e68c'];
 
         function createFirework(x, y) {
             const particleCount = 60;
             const color = colors[Math.floor(Math.random() * colors.length)];
-            
             for (let i = 0; i < particleCount; i++) {
                 particles.push(new Particle(x, y, color));
             }
@@ -348,10 +306,8 @@ KHAYITOV, [18.01.2026 20:17]
 
         function animate() {
             requestAnimationFrame(animate);
-            // Clear canvas but leave a trail effect
             ctx.fillStyle = 'rgba(5, 5, 5, 0.1)'; 
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-
             particles.forEach((particle, index) => {
                 if (particle.alpha > 0) {
                     particle.update();
@@ -361,30 +317,16 @@ KHAYITOV, [18.01.2026 20:17]
                 }
             });
         }
-
-        // Start animation loop immediately so it's ready
         animate();
 
-        // Function to launch random fireworks automatically
         function startFireworks() {
-            let duration = 5000; // Lasts 5 seconds
+            let duration = 5000; 
             let end = Date.now() + duration;
-
             (function frame() {
-                // Launch a firework from a random x position at the bottom/middle
-                const randomX = Math.random() * canvas.width;
-                const randomY = Math.random() * (canvas.height / 2); // Top half of screen
-                
-                createFirework(randomX, randomY);
-
-                if (Date.now() < end) {
-                    // Keep launching every 300ms
-                    setTimeout(frame, 300);
-                }
+                createFirework(Math.random() * canvas.width, Math.random() * (canvas.height / 2));
+                if (Date.now() < end) setTimeout(frame, 300);
             }());
         }
-
     </script>
 </body>
 </html>
-
